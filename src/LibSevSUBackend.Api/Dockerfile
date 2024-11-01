@@ -7,10 +7,16 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["LibSevSUBackend.Api/LibSevSUBackend.Api.csproj", "LibSevSUBackend.Api/"]
-RUN dotnet restore "LibSevSUBackend.Api/LibSevSUBackend.Api.csproj"
+COPY ["src/LibSevSUBackend.Api/LibSevSUBackend.Api.csproj", "src/LibSevSUBackend.Api/"]
+COPY ["src/LibSevSUBackend.AppServices/LibSevSUBackend.AppServices.csproj", "src/LibSevSUBackend.AppServices/"]
+COPY ["src/LibSevSUBackend.Contracts/LibSevSUBackend.Contracts.csproj", "src/LibSevSUBackend.Contracts/"]
+COPY ["src/LibSevSUBackend.ComponentRegistrar/LibSevSUBackend.ComponentRegistrar.csproj", "src/LibSevSUBackend.ComponentRegistrar/"]
+COPY ["src/LibSevSUBackend.Infrastructure/LibSevSUBackend.Infrastructure.csproj", "src/LibSevSUBackend.Infrastructure/"]
+COPY ["src/LibSevSUBackend.Domain/LibSevSUBackend.Domain.csproj", "src/LibSevSUBackend.Domain/"]
+COPY ["src/LibSevSUBackend.DataAccess/LibSevSUBackend.DataAccess.csproj", "src/LibSevSUBackend.DataAccess/"]
+RUN dotnet restore "src/LibSevSUBackend.Api/LibSevSUBackend.Api.csproj"
 COPY . .
-WORKDIR "/src/LibSevSUBackend.Api"
+WORKDIR "/src/src/LibSevSUBackend.Api"
 RUN dotnet build "LibSevSUBackend.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish

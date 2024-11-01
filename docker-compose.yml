@@ -1,0 +1,52 @@
+﻿services:
+  libsevsubackend.api:
+    image: libsevsubackend.api
+    build:
+      context: .
+      dockerfile: src/LibSevSUBackend.Api/Dockerfile
+    environment:
+      - ConnectionStrings__DbConnection=Server=postgres;Database=LibraryDb;Username=postgres;Password=password;Port=5432
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "5000:8080"
+    networks:
+      - library-network
+        
+  libsevsubackend.dbmigrator:
+    image: libsevsubackend.dbmigrator
+    build:
+      context: .
+      dockerfile: src/LibSevSUBackend.DbMigrator/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - ConnectionStrings__DbConnection=Server=postgres;Database=LibraryDb;Username=postgres;Password=password;Port=5432
+    networks:
+      - library-network
+        
+  postgres:
+    image: postgres
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 1000M
+        reservations:
+          cpus: '0.25'
+          memory: 500M
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - library-network
+        
+        
+volumes:
+  pg-data:
+
+networks:
+  library-network:
