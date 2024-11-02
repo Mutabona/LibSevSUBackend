@@ -1,3 +1,4 @@
+using LibSevSUBackend.Contracts.Books;
 using LibSevSUBackend.Contracts.Users;
 
 namespace LibSevSUBackend.AppServices.Contexts.Users.Repositories;
@@ -32,10 +33,44 @@ public interface IUserRepository
     Task DeleteAsync(Guid userId, CancellationToken cancellationToken);
     
     /// <summary>
-    /// Получение пользователя по почте.
+    /// Получение пользователя по логину.
     /// </summary>
     /// <param name="login">Логин.</param>
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>Данные пользователя <see cref="UserDto"/></returns>
     Task<UserDto> GetByLoginAsync(string login, CancellationToken cancellationToken);
+    
+    /// <summary>
+    /// Получение пользователя по идентификатору.
+    /// </summary>
+    /// <param name="userId">Идентификатор пользователя.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
+    /// <returns>Модель пользователя.</returns>
+    Task<UserDto> GetByIdAsync(Guid userId, CancellationToken cancellationToken);
+    
+    /// <summary>
+    /// Добавляет поользователя книгу в избранные.
+    /// </summary>
+    /// <param name="userId">Идентификатор пользователя.</param>
+    /// <param name="book">Модель книги.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
+    /// <returns></returns>
+    Task AddFavoriteBookAsync(Guid userId, BookDto book, CancellationToken cancellationToken);
+    
+    /// <summary>
+    /// Получает избранные книги пользователя.
+    /// </summary>
+    /// <param name="userId">Идентификатор пользователя.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
+    /// <returns>Коллекцию моделей книг.</returns>
+    Task<IReadOnlyCollection<BookDto>> GetFavoriteBooksAsync(Guid userId, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Удаляет книгу из избранного.
+    /// </summary>
+    /// <param name="userId">Идентификатор пользователя.</param>
+    /// <param name="bookId">Идентификатор книги.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
+    /// <returns></returns>
+    Task RemoveFavoriteBookAsync(Guid userId, Guid bookId, CancellationToken cancellationToken);
 }

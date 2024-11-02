@@ -1,4 +1,5 @@
 using LibSevSUBackend.Domain.Base;
+using LibSevSUBackend.Domain.Books.Entity;
 
 namespace LibSevSUBackend.Domain.Users.Entity;
 
@@ -26,4 +27,9 @@ public class User : BaseEntity
     /// Роль в системе.
     /// </summary>
     public string Role { get; set; }
+    
+    /// <summary>
+    /// Избранные книги.
+    /// </summary>
+    public virtual ICollection<Book> FavoriteBooks { get; set; } = new List<Book>();
 }

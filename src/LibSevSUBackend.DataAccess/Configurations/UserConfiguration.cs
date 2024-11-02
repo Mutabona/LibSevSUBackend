@@ -31,5 +31,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .Property(x => x.Name)
             .HasMaxLength(50)
             .IsRequired();
+
+        builder
+            .HasMany(x => x.FavoriteBooks)
+            .WithMany();
     }
 }

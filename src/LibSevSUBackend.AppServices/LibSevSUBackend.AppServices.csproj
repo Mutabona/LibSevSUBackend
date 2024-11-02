@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\LibSevSUBackend.Contracts\LibSevSUBackend.Contracts.csproj" />
+      <ProjectReference Include="..\LibSevSUBackend.Domain\LibSevSUBackend.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -99,6 +99,7 @@ public class ExceptionHandlingMiddleware
     {
         return exception switch
         {
+            LoginAlreadyExistsException => HttpStatusCode.Conflict,
             EntityNotFoundException => HttpStatusCode.NotFound,
             InvalidLoginDataException => HttpStatusCode.Unauthorized,
             ForbiddenException => HttpStatusCode.Forbidden,

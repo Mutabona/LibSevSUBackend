@@ -1,5 +1,6 @@
 using System.Text;
 using LibSevSUBackend.Api.Controllers;
+using LibSevSUBackend.Api.Middlewares;
 using LibSevSUBackend.ComponentRegistrar;
 using LibSevSUBackend.Contracts.Users;
 using LibSevSUBackend.DataAccess;
@@ -76,6 +77,8 @@ builder.Services.AddAuthentication(x =>
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -1,12 +1,16 @@
 using AutoMapper;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using LibSevSUBackend.AppServices.Contexts.Books.Builders;
+using LibSevSUBackend.AppServices.Contexts.Books.Repositories;
+using LibSevSUBackend.AppServices.Contexts.Books.Services;
 using LibSevSUBackend.AppServices.Contexts.Users.Repositories;
 using LibSevSUBackend.AppServices.Contexts.Users.Services;
 using LibSevSUBackend.AppServices.Services;
 using LibSevSUBackend.AppServices.Validators.Users;
 using LibSevSUBackend.ComponentRegistrar.MapProfiles;
 using LibSevSUBackend.DataAccess;
+using LibSevSUBackend.DataAccess.Books.Repository;
 using LibSevSUBackend.DataAccess.Users.Repository;
 using LibSevSUBackend.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -23,10 +27,14 @@ public static class Registrar
     {
         services.AddTransient<IUserService, UserService>();
         services.AddTransient<IJwtService, JwtService> ();
+        services.AddTransient<IBookService, BookService>();
         
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IBookRepository, BookRepository>();
         
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
+        services.AddScoped<IBookSpecificationBuilder, BookSpecificationBuilder>();
         
         services.AddSingleton<IMapper>(new Mapper(GetMapperConfiguration()));
         
@@ -42,6 +50,7 @@ public static class Registrar
         var configuration = new MapperConfiguration(cfg =>
         {
             cfg.AddProfile<UserProfile>();
+            cfg.AddProfile<BookProfile>();
         });
         
         configuration.AssertConfigurationIsValid();
@@ -52,6 +61,7 @@ public static class Registrar
     {
         services.AddValidatorsFromAssemblyContaining<LoginUserRequestValidator>();
         services.AddValidatorsFromAssemblyContaining<RegisterUserRequestValidator>();
+        services.AddValidatorsFromAssemblyContaining<AddBookRequestValidator>();
         services.AddFluentValidationAutoValidation();
 
         return services;
