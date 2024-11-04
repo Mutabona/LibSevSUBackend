@@ -16,7 +16,7 @@ public class LoginUserRequestValidator : AbstractValidator<LoginUserRequest>
         RuleFor(x => x.Password)
             .NotEmpty()
             .WithMessage("Пароль не может быть пустым.")
-            .MinimumLength(6)
+            .MinimumLength(2)
             .MaximumLength(50);
 
         RuleFor(x => x.Login)
