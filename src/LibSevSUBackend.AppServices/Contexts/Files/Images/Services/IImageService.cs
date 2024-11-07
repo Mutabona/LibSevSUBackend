@@ -43,6 +43,15 @@ public interface IImageService
     Task<Guid> AddImageToBookAsync(Guid bookId, IFormFile file, CancellationToken cancellationToken);
     
     /// <summary>
+    /// Добавляет изображение к новости.
+    /// </summary>
+    /// <param name="newsId">Идентификатор новости.</param>
+    /// <param name="file">Изображение</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
+    /// <returns>Идентификатор добавленного изображения.</returns>
+    Task<Guid> AddImageToNewsAsync(Guid newsId, IFormFile file, CancellationToken cancellationToken);
+    
+    /// <summary>
     /// Удаляет фото пользователя.
     /// </summary>
     /// <param name="userId">Идентификатор пользователя.</param>
@@ -57,4 +66,12 @@ public interface IImageService
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns></returns>
     Task DeleteBookImageAsync(Guid bookId, CancellationToken cancellationToken);
+    
+    /// <summary>
+    /// Удаляет фото новости.
+    /// </summary>
+    /// <param name="newsId">Идентификатор новости.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
+    /// <returns></returns>
+    Task DeleteNewsImageAsync(Guid newsId, CancellationToken cancellationToken);
 }

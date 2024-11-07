@@ -5,7 +5,6 @@ using LibSevSUBackend.AppServices.Exceptions;
 using LibSevSUBackend.Contracts.Books;
 using LibSevSUBackend.Contracts.Users;
 using LibSevSUBackend.Domain.Books.Entity;
-using LibSevSUBackend.Domain.Files.Images.Entity;
 using LibSevSUBackend.Domain.Users.Entity;
 using LibSevSUBackend.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;

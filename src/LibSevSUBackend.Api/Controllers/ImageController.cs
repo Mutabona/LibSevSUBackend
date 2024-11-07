@@ -51,6 +51,25 @@ public class ImageController(IImageService imageService) : BaseController
     }
     
     /// <summary>
+    /// Добавляет изображение к новости.
+    /// </summary>
+    /// <param name="newsId">Идентификатор новости.</param>
+    /// <param name="file">Изображение.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
+    /// <returns>Идентификатор добавленного изображения.</returns>
+    [Authorize(Roles = "Admin")]
+    [HttpPost("/News/{newsId}/Image")]
+    [ProducesResponseType(typeof(Guid), (int)HttpStatusCode.Created)]
+    [ProducesResponseType((int)HttpStatusCode.NotFound)]
+    [ProducesResponseType((int)HttpStatusCode.Forbidden)]
+    [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+    public async Task<IActionResult> UploadImageToNewsAsync(Guid newsId, IFormFile file, CancellationToken cancellationToken)
+    {
+        var fileId = await imageService.AddImageToNewsAsync(newsId, file, cancellationToken);
+        return StatusCode((int)HttpStatusCode.Created, fileId.ToString());
+    }
+    
+    /// <summary>
     /// Добавляет изображение к пользователю.
     /// </summary>
     /// <param name="file">Изображение.</param>
@@ -101,6 +120,25 @@ public class ImageController(IImageService imageService) : BaseController
     public async Task<IActionResult> DeleteBookImageAsync(Guid bookId, CancellationToken cancellationToken)
     {
         await imageService.DeleteBookImageAsync(bookId, cancellationToken);
+        
+        return NoContent();
+    }
+    
+    /// <summary>
+    /// Удаляет изображение новости.
+    /// </summary>
+    /// <param name="newsId">Идентификатор новости.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
+    /// <returns></returns>
+    [Authorize(Roles = "Admin")]
+    [HttpDelete("/News/{newsId}/Image")]
+    [ProducesResponseType((int)HttpStatusCode.NoContent)]
+    [ProducesResponseType((int)HttpStatusCode.NotFound)]
+    [ProducesResponseType((int)HttpStatusCode.Forbidden)]
+    [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+    public async Task<IActionResult> DeleteNewsImageAsync(Guid newsId, CancellationToken cancellationToken)
+    {
+        await imageService.DeleteNewsImageAsync(newsId, cancellationToken);
         
         return NoContent();
     }
