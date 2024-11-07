@@ -26,7 +26,7 @@ public class UserDto
     public string Role { get; set; }
     
     /// <summary>
-    /// Пароль.
+    /// Идентификатор фото.
     /// </summary>
-    public string Password { get; set; }
+    public Guid? PhotoId { get; set; }
 }

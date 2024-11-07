@@ -29,4 +29,9 @@ public class BookDto
     /// Дата издания.
     /// </summary>
     public DateOnly PublishDate { get; set; }
+    
+    /// <summary>
+    /// Идентификатор фото.
+    /// </summary>
+    public Guid? PhotoId { get; set; }
 }

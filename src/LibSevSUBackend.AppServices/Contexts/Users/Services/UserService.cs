@@ -6,6 +6,7 @@ using LibSevSUBackend.AppServices.Helpers;
 using LibSevSUBackend.AppServices.Services;
 using LibSevSUBackend.Contracts.Books;
 using LibSevSUBackend.Contracts.Users;
+using LibSevSUBackend.Domain.Files.Images.Entity;
 
 namespace LibSevSUBackend.AppServices.Contexts.Users.Services;
 
@@ -119,5 +120,17 @@ public class UserService : IUserService
         if (! (await _bookService.IsBookExistsAsync(bookId, cancellationToken))) throw new EntityNotFoundException();
         
         await _repository.RemoveFavoriteBookAsync(userId, bookId, cancellationToken);
+    }
+
+    ///<inheritdoc/>
+    public async Task AddImageAsync(Guid userId, Guid imageId, CancellationToken cancellationToken)
+    {
+        await _repository.AddImageAsync(userId, imageId, cancellationToken);
+    }
+
+    ///<inheritdoc/>
+    public async Task<UserDto> GetUserByIdAsync(Guid userId, CancellationToken cancellationToken)
+    {
+        return await _repository.GetByIdAsync(userId, cancellationToken);
     }
 }

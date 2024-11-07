@@ -28,5 +28,9 @@ public class BookConfiguration : IEntityTypeConfiguration<Book>
         builder
             .Property(x => x.PublishDate)
             .IsRequired();
+
+        builder
+            .HasOne(x => x.Photo)
+            .WithOne();
     }
 }

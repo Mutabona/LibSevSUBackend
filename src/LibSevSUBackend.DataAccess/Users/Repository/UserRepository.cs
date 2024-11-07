@@ -5,6 +5,7 @@ using LibSevSUBackend.AppServices.Exceptions;
 using LibSevSUBackend.Contracts.Books;
 using LibSevSUBackend.Contracts.Users;
 using LibSevSUBackend.Domain.Books.Entity;
+using LibSevSUBackend.Domain.Files.Images.Entity;
 using LibSevSUBackend.Domain.Users.Entity;
 using LibSevSUBackend.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -38,7 +39,9 @@ public class UserRepository : IUserRepository
     ///<inheritdoc/>
     public async Task<UserDto> LoginAsync(LoginUserRequest request, CancellationToken cancellationToken)
     { 
-        var user = await _repository.GetAll().Where(s => s.Login == request.Login && s.Password == request.Password)
+        var user = await _repository
+            .GetAll()
+            .Where(s => s.Login == request.Login && s.Password == request.Password)
             .ProjectTo<UserDto>(_mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(cancellationToken);
 
@@ -55,8 +58,11 @@ public class UserRepository : IUserRepository
     ///<inheritdoc/>
     public async Task<UserDto> GetByLoginAsync(string login, CancellationToken cancellationToken)
     {
-        var user = await _repository.GetAll().Where(s => s.Login == login)
-            .ProjectTo<UserDto>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(cancellationToken);
+        var user = await _repository
+            .GetAll()
+            .Where(s => s.Login == login)
+            .ProjectTo<UserDto>(_mapper.ConfigurationProvider)
+            .FirstOrDefaultAsync(cancellationToken);
         
         if (user == null) throw new EntityNotFoundException();
         return user;
@@ -72,7 +78,10 @@ public class UserRepository : IUserRepository
     ///<inheritdoc/>
     public async Task AddFavoriteBookAsync(Guid userId, BookDto book, CancellationToken cancellationToken)
     {
-        var user = await _repository.GetByIdAsync(userId, cancellationToken);
+        var user = await _repository
+            .GetByPredicate(u => u.Id == userId)
+            .Include(b => b.FavoriteBooks)
+            .FirstOrDefaultAsync(cancellationToken);
         var bookEntity = _mapper.Map<Book>(book);
         user.FavoriteBooks.Add(bookEntity);
         await _repository.UpdateAsync(user, cancellationToken);
@@ -81,7 +90,10 @@ public class UserRepository : IUserRepository
     ///<inheritdoc/>
     public async Task RemoveFavoriteBookAsync(Guid userId, Guid bookId, CancellationToken cancellationToken)
     {
-        var user = await _repository.GetByPredicate(u => u.Id == userId).Include(b => b.FavoriteBooks).FirstOrDefaultAsync(cancellationToken);
+        var user = await _repository
+            .GetByPredicate(u => u.Id == userId)
+            .Include(b => b.FavoriteBooks)
+            .FirstOrDefaultAsync(cancellationToken);
         var book = user.FavoriteBooks.FirstOrDefault(b => b.Id == bookId);
         if (book == null) throw new ConflictException();
         user.FavoriteBooks.Remove(book);
@@ -92,8 +104,23 @@ public class UserRepository : IUserRepository
     public async Task<IReadOnlyCollection<BookDto>> GetFavoriteBooksAsync(Guid userId,
         CancellationToken cancellationToken)
     {
-        var user = await _repository.GetAll().Where(u => u.Id == userId).Include(b => b.FavoriteBooks).FirstOrDefaultAsync(cancellationToken);
+        var user = await _repository
+            .GetAll()
+            .Where(u => u.Id == userId)
+            .Include(b => b.FavoriteBooks)
+            .FirstOrDefaultAsync(cancellationToken);
         var books = _mapper.Map<IReadOnlyCollection<BookDto>>(user.FavoriteBooks);
         return books;
+    }
+
+    ///<inheritdoc/>
+    public async Task AddImageAsync(Guid userId, Guid imageId, CancellationToken cancellationToken)
+    {
+        var user = await _repository
+            .GetByPredicate(u => u.Id == userId)
+            .Include(b => b.FavoriteBooks)
+            .FirstOrDefaultAsync(cancellationToken);
+        user.PhotoId = imageId;
+        await _repository.UpdateAsync(user, cancellationToken);
     }
 }

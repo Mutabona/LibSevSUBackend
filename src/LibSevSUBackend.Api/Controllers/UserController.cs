@@ -2,6 +2,7 @@ using System.Net;
 using LibSevSUBackend.Api.Base;
 using LibSevSUBackend.AppServices.Contexts.Users.Services;
 using LibSevSUBackend.Contracts.Books;
+using LibSevSUBackend.Contracts.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -66,5 +67,22 @@ public class UserController(IUserService userService) : BaseController
         var userId = GetCurrentUserId();
         await userService.RemoveFavoriteBookAsync(userId, bookId, cancellationToken);
         return NoContent();
+    }
+
+    /// <summary>
+    /// Получает информацию о пользователе.
+    /// </summary>
+    /// <param name="cancellationToken">Токен отмены.</param>
+    /// <returns>Модель пользователя.</returns>
+    [Authorize]
+    [HttpGet]
+    [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType(typeof(UserDto), (int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.NotFound)]
+    public async Task<IActionResult> GetUser(CancellationToken cancellationToken)
+    {
+        var userId = GetCurrentUserId();
+        var user = await userService.GetUserByIdAsync(userId, cancellationToken);
+        return Ok(user);
     }
 }

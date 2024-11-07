@@ -4,6 +4,8 @@ using FluentValidation.AspNetCore;
 using LibSevSUBackend.AppServices.Contexts.Books.Builders;
 using LibSevSUBackend.AppServices.Contexts.Books.Repositories;
 using LibSevSUBackend.AppServices.Contexts.Books.Services;
+using LibSevSUBackend.AppServices.Contexts.Files.Images.Repositories;
+using LibSevSUBackend.AppServices.Contexts.Files.Images.Services;
 using LibSevSUBackend.AppServices.Contexts.Users.Repositories;
 using LibSevSUBackend.AppServices.Contexts.Users.Services;
 using LibSevSUBackend.AppServices.Services;
@@ -11,6 +13,7 @@ using LibSevSUBackend.AppServices.Validators.Users;
 using LibSevSUBackend.ComponentRegistrar.MapProfiles;
 using LibSevSUBackend.DataAccess;
 using LibSevSUBackend.DataAccess.Books.Repository;
+using LibSevSUBackend.DataAccess.Files.Images.Repository;
 using LibSevSUBackend.DataAccess.Users.Repository;
 using LibSevSUBackend.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -28,9 +31,11 @@ public static class Registrar
         services.AddTransient<IUserService, UserService>();
         services.AddTransient<IJwtService, JwtService> ();
         services.AddTransient<IBookService, BookService>();
+        services.AddTransient<IImageService, ImageService>();
         
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IBookRepository, BookRepository>();
+        services.AddScoped<IImageRepository, ImageRepository>();
         
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
@@ -51,6 +56,7 @@ public static class Registrar
         {
             cfg.AddProfile<UserProfile>();
             cfg.AddProfile<BookProfile>();
+            cfg.AddProfile<ImageProfile>();
         });
         
         configuration.AssertConfigurationIsValid();

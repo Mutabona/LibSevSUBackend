@@ -28,7 +28,7 @@ public class BookRepository(IRepository<Book> repository, IMapper mapper) : IBoo
     ///<inheritdoc/>
     public async Task<BookDto> GetBookByIdAsync(Guid bookId, CancellationToken cancellationToken)
     {
-        var book = await repository.GetAll().Where(b => b.Id == bookId).FirstOrDefaultAsync(cancellationToken);
+        var book = await repository.GetByIdAsync(bookId, cancellationToken);
         return mapper.Map<BookDto>(book);
     }
 
@@ -47,5 +47,15 @@ public class BookRepository(IRepository<Book> repository, IMapper mapper) : IBoo
             .Take(take)
             .ProjectTo<BookDto>(mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
+    }
+    
+    ///<inheritdoc/>
+    public async Task AddImageAsync(Guid bookId, Guid imageId, CancellationToken cancellationToken)
+    {
+        var book = await repository
+            .GetByPredicate(u => u.Id == bookId)
+            .FirstOrDefaultAsync(cancellationToken);
+        book.PhotoId = imageId;
+        await repository.UpdateAsync(book, cancellationToken);
     }
 }

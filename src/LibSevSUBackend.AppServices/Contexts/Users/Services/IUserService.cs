@@ -1,5 +1,6 @@
 using LibSevSUBackend.Contracts.Books;
 using LibSevSUBackend.Contracts.Users;
+using LibSevSUBackend.Domain.Files.Images.Entity;
 
 namespace LibSevSUBackend.AppServices.Contexts.Users.Services;
 
@@ -73,4 +74,21 @@ public interface IUserService
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns></returns>
     Task RemoveFavoriteBookAsync(Guid userId, Guid bookId, CancellationToken cancellationToken);
+    
+    /// <summary>
+    /// Добавляет изображение к пользователю.
+    /// </summary>
+    /// <param name="userId">Идентификатор пользователя.</param>
+    /// <param name="imageId">Идентификатор изображения.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
+    /// <returns></returns>
+    Task AddImageAsync(Guid userId, Guid imageId, CancellationToken cancellationToken);
+    
+    /// <summary>
+    /// Получает пользователя.
+    /// </summary>
+    /// <param name="userId">Идентификатор пользователя.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
+    /// <returns>Модель пользователя.</returns>
+    Task<UserDto> GetUserByIdAsync(Guid userId, CancellationToken cancellationToken);
 }

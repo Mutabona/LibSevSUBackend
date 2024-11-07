@@ -35,5 +35,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder
             .HasMany(x => x.FavoriteBooks)
             .WithMany();
+        
+        builder
+            .HasOne(x => x.Photo)
+            .WithOne();
     }
 }

@@ -46,4 +46,13 @@ public interface IBookService
     /// <param name="cancellationToken">Токен отмены.</param>
     /// <returns>True, если существует, false, если нет.</returns>
     Task<bool> IsBookExistsAsync(Guid bookId, CancellationToken cancellationToken);
+    
+    /// <summary>
+    /// Добавляет изображение к книге.
+    /// </summary>
+    /// <param name="bookId">Идентификатор книги.</param>
+    /// <param name="imageId">Идентификатор изображения.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
+    /// <returns></returns>
+    Task AddImageAsync(Guid bookId, Guid imageId, CancellationToken cancellationToken);
 }

@@ -46,4 +46,12 @@ public interface IBookRepository
         int take, 
         int? skip,
         CancellationToken cancellationToken);
+    
+    /// <summary>
+    /// Добавляет изображение к книге.
+    /// </summary>
+    /// <param name="bookId">Идентификатор книги.</param>
+    /// <param name="imageId">Идентификатор изображения.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
+    Task AddImageAsync(Guid bookId, Guid imageId, CancellationToken cancellationToken);
 }

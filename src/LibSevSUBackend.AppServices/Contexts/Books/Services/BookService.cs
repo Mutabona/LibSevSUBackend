@@ -68,4 +68,10 @@ public class BookService : IBookService
         }
         return true;
     }
+    
+    ///<inheritdoc/>
+    public async Task AddImageAsync(Guid userId, Guid imageId, CancellationToken cancellationToken)
+    {
+        await _repository.AddImageAsync(userId, imageId, cancellationToken);
+    }
 }
