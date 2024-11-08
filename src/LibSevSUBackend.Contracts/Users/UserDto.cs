@@ -29,4 +29,9 @@ public class UserDto
     /// Идентификатор фото.
     /// </summary>
     public Guid? PhotoId { get; set; }
+    
+    /// <summary>
+    /// Пароль.
+    /// </summary>
+    public string Password { get; set; }
 }
