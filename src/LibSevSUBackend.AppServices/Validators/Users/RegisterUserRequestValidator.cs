@@ -18,13 +18,19 @@ public class RegisterUserRequestValidator : AbstractValidator<RegisterUserReques
             .NotEmpty()
             .WithMessage("Пароль не может быть пустым.")
             .MinimumLength(2)
-            .MaximumLength(50);
+            .WithMessage("Минимальная длина пароля 2 символа.")
+            .MaximumLength(50)
+            .WithMessage("Максимальная длина пароля 50 символов.");
 
         RuleFor(x => x.Login)
             .NotEmpty()
             .WithMessage("Логин не может быть пустым.")
+            .Matches("[a-zA-Z0-9_-]+")
+            .WithMessage("В логине можно использовать только латиницу.")
             .MinimumLength(2)
-            .MaximumLength(50);
+            .WithMessage("Минимальная длина логина 2 символа.")
+            .MaximumLength(50)
+            .WithMessage("Максимальная длина логина 50 символов.");
 
         RuleFor(x => x.Name)
             .NotEmpty()
