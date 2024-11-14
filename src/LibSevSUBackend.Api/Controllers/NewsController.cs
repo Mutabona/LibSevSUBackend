@@ -65,4 +65,20 @@ public class NewsController(INewsService service) : BaseController
         var books = await service.GetNewsAsync(take, skip, cancellationToken);
         return Ok(books);
     }
+
+    /// <summary>
+    /// Получает новость по идентификатору.
+    /// </summary>
+    /// <param name="newsId">Идентификатор новости.</param>
+    /// <param name="cancellationToken">Токен отмены.</param>
+    /// <returns>Модель новости.</returns>
+    [HttpGet("{newsId}")]
+    [ProducesResponseType(typeof(NewsDto), (int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.NotFound)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    public async Task<IActionResult> GetNewsByIdAsync(Guid newsId, CancellationToken cancellationToken)
+    {
+        var news = await service.GetByIdAsync(newsId, cancellationToken);
+        return Ok(news);
+    }
 }
