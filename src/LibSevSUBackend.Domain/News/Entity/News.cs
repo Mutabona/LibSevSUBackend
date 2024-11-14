@@ -27,4 +27,9 @@ public class News : BaseEntity
     /// Фото.
     /// </summary>
     public Image Image { get; set; }
+    
+    /// <summary>
+    /// Дата публикации.
+    /// </summary>
+    public DateOnly PublishDate { get; set; }
 }

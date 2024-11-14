@@ -24,4 +24,9 @@ public class NewsDto
     /// Фото новости.
     /// </summary>
     public Guid? ImageId { get; set; }
+    
+    /// <summary>
+    /// Дата публикации.
+    /// </summary>
+    public DateOnly PublishDate { get; set; }
 }

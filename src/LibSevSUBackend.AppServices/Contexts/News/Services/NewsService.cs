@@ -5,13 +5,14 @@ using LibSevSUBackend.Contracts.News;
 namespace LibSevSUBackend.AppServices.Contexts.News.Services;
 
 ///<inheritdoc cref="INewsService"/>
-public class NewsService(INewsRepository repository, IMapper mapper) : INewsService
+public class NewsService(INewsRepository repository, IMapper mapper, TimeProvider timeProvider) : INewsService
 {
     ///<inheritdoc/>
     public async Task<Guid> AddNewsAsync(AddNewsRequest news, CancellationToken cancellationToken)
     {
         var entity = mapper.Map<NewsDto>(news);
         entity.Id = Guid.NewGuid();
+        entity.PublishDate = DateOnly.FromDateTime(timeProvider.GetUtcNow().UtcDateTime);
         return await repository.AddNewsAsync(entity, cancellationToken);
     }
 

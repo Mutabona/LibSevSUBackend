@@ -33,7 +33,7 @@ public class NewsRepository(IRepository<Domain.News.Entity.News> repository, IMa
     {
         var query = repository
             .GetAll()
-            .OrderBy(b => b.Id);
+            .OrderBy(b => b.PublishDate);
         
         if (skip.HasValue) query = (IOrderedQueryable<Domain.News.Entity.News>)query.Skip(skip.Value);
         
